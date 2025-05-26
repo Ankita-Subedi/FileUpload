@@ -5,11 +5,9 @@ const allowedFormats = ["jpeg", "png", "webp"];
 
 export class ImageTransformDto {
   @IsOptional()
-  @Transform(({ value }) => {
-    if (typeof value !== "string") return undefined;
-    const lower = value.toLowerCase();
-    return lower === "jpg" ? "jpeg" : lower;
-  })
+  @Transform(({ value }) =>
+    typeof value === "string" ? value.toLowerCase() : undefined
+  )
   @IsIn(allowedFormats, {
     message: `Format must be one of: ${allowedFormats.join(", ")}`,
   })
@@ -17,21 +15,19 @@ export class ImageTransformDto {
   format?: string;
 
   @IsOptional()
-  @Transform(({ value }) => {
-    if (value === undefined || value === null || value === "") return undefined;
-    return parseInt(value, 10);
-  })
-  @IsInt({ message: "Width must be an integer" })
+  @Transform(({ value }) =>
+    value && Number(value) > 0 ? Number(value) : undefined
+  )
+  @IsInt()
   @Min(1, { message: "Width must be at least 1" })
   @Expose()
   width?: number;
 
   @IsOptional()
-  @Transform(({ value }) => {
-    if (value === undefined || value === null || value === "") return undefined;
-    return parseInt(value, 10);
-  })
-  @IsInt({ message: "Height must be an integer" })
+  @Transform(({ value }) =>
+    value && Number(value) > 0 ? Number(value) : undefined
+  )
+  @IsInt()
   @Min(1, { message: "Height must be at least 1" })
   @Expose()
   height?: number;
