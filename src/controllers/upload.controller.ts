@@ -1,10 +1,6 @@
 import { Response } from "express";
 import { ApiError } from "../error/ApiError";
-import {
-  processImage,
-  ValidFormat,
-  validFormats,
-} from "../utils/imageProcessor";
+import { processImage, ValidFormat } from "../utils/imageProcessor";
 import { ValidatedRequest } from "../middlewares/dtoValidation.middleware";
 import { ImageTransformDto } from "../dto/imageTransformDto";
 

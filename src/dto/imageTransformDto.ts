@@ -6,7 +6,7 @@ const allowedFormats = ["jpeg", "png", "webp"];
 export class ImageTransformDto {
   @IsOptional()
   @Transform(({ value }) =>
-    typeof value === "string" ? value.toLowerCase() : undefined
+    typeof value === "string" ? value.toLowerCase() : value
   )
   @IsIn(allowedFormats, {
     message: `Format must be one of: ${allowedFormats.join(", ")}`,
