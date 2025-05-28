@@ -9,21 +9,23 @@ import { ImageTransformDto } from "../dto/imageTransformDto";
 
 const router = Router();
 
+// Middleware to handle multer errors gracefully
+const handleMulterUpload: RequestHandler = (req, res, next) => {
+  upload.single("image")(req, res, (err) => {
+    if (err) {
+      console.error("Multer error:", err);
+      return res.status(400).json({
+        success: false,
+        message: "Multer error: " + err.message,
+      });
+    }
+    next();
+  });
+};
+
 router.post(
   "/upload",
-  // upload.single("image"),
-  (req, res, next) => {
-    upload.single("image")(req, res, (err) => {
-      if (err) {
-        console.error("Multer error:", err);
-        return res.status(400).json({
-          success: false,
-          message: "Multer error: " + err.message,
-        });
-      }
-      next();
-    });
-  },
+  handleMulterUpload,
   validateDto(ImageTransformDto, DTOSource.BODY),
   uploadImageHandler as unknown as RequestHandler
 );
